@@ -1,0 +1,11 @@
+[
+  { "id": 1, "name": "Deshi Cow", "type": "Cow", "price": 120000, "image": "/cows/cow1.jpg" },
+  { "id": 2, "name": "Black Cow", "type": "Cow", "price": 150000, "image": "/cows/cow2.jpg" },
+  { "id": 3, "name": "White Cow", "type": "Cow", "price": 130000, "image": "/cows/cow3.jpg" },
+  { "id": 4, "name": "Big Cow", "type": "Cow", "price": 200000, "image": "/cows/cow4.jpg" },
+  { "id": 5, "name": "Farm Cow", "type": "Cow", "price": 140000, "image": "/cows/cow5.jpg" },
+  { "id": 6, "name": "Healthy Cow", "type": "Cow", "price": 160000, "image": "/cows/cow6.jpg" },
+  { "id": 7, "name": "Village Cow", "type": "Cow", "price": 110000, "image": "/cows/cow7.jpg" },
+  { "id": 8, "name": "Premium Cow", "type": "Cow", "price": 220000, "image": "/cows/cow8.jpg" },
+  { "id": 9, "name": "Royal Cow", "type": "Cow", "price": 250000, "image": "/cows/cow9.jpg" }
+]
