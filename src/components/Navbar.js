@@ -12,7 +12,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
-  const profileRef = useRef();
+  const profileRef = useRef(null);
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -20,8 +20,9 @@ export default function Navbar() {
     { name: "Profile", path: "/profile" },
   ];
 
+  // close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleOutsideClick = (event) => {
       if (
         profileRef.current &&
         !profileRef.current.contains(event.target)
@@ -30,34 +31,40 @@ export default function Navbar() {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleOutsideClick);
     return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
+
+  const handleLogout = () => {
+    signOut();
+    setProfileOpen(false);
+    setMobileOpen(false);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b shadow-sm">
-
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-
+        
+        {/* Logo */}
         <Link
           href="/"
-          className="text-xl font-bold text-green-700 cursor-pointer hover:scale-105 hover:text-green-800 transition"
+          className="text-xl font-bold text-green-700 hover:text-green-800 transition"
         >
           🐄 QurbaniHat
         </Link>
 
-        {/* DESKTOP MENU */}
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-2">
           {navItems.map((item) => {
-            const active = pathname === item.path;
+            const isActive = pathname === item.path;
 
             return (
               <Link
                 key={item.path}
                 href={item.path}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium ${
-                  active
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
+                  isActive
                     ? "bg-green-600 text-white shadow"
                     : "text-gray-700 hover:text-green-600"
                 }`}
@@ -68,51 +75,44 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* Right Section */}
         <div className="flex items-center gap-3">
-
           {!session ? (
             <Link
               href="/login"
-              className="bg-green-600 text-white px-4 py-1.5 rounded-full"
+              className="bg-green-600 text-white px-4 py-1.5 rounded-full hover:bg-green-700 transition"
             >
               Login
             </Link>
           ) : (
-            <div className="relative flex items-center gap-2">
-
+            <div className="relative flex items-center gap-2" ref={profileRef}>
+              
               <button
-                onClick={() => setProfileOpen(!profileOpen)}
+                onClick={() => setProfileOpen((prev) => !prev)}
                 className="flex items-center gap-2 bg-white px-2 py-1 rounded-full shadow-sm"
               >
                 <img
                   src={
                     session.user.image ||
-                    "https://ui-avatars.com/api/?name=" +
-                      session.user.name
+                    `https://ui-avatars.com/api/?name=${session.user.name}`
                   }
                   className="w-8 h-8 rounded-full"
+                  alt="user"
                 />
               </button>
 
               {profileOpen && (
-                <div
-                  ref={profileRef}
-                  className="absolute right-0 top-12 w-44 bg-white rounded-xl shadow-xl"
-                >
+                <div className="absolute right-0 top-12 w-44 bg-white rounded-xl shadow-xl overflow-hidden">
                   <Link
                     href="/profile"
-                    className="block px-4 py-2 hover:bg-gray-100"
                     onClick={() => setProfileOpen(false)}
+                    className="block px-4 py-2 hover:bg-gray-100"
                   >
                     👤 Profile
                   </Link>
 
                   <button
-                    onClick={() => {
-                      signOut();
-                      setProfileOpen(false);
-                    }}
+                    onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
                   >
                     🚪 Logout
@@ -122,21 +122,19 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* ✅ FIX: Hamburger always visible */}
+          {/* Mobile Toggle */}
           <button
-            className="md:hidden text-2xl cursor-pointer"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden text-2xl"
+            onClick={() => setMobileOpen((prev) => !prev)}
           >
             ☰
           </button>
-
         </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t px-6 py-3 flex flex-col gap-2">
-
           {navItems.map((item) => (
             <Link
               key={item.path}
@@ -162,19 +160,14 @@ export default function Navbar() {
             </Link>
           ) : (
             <button
-              onClick={() => {
-                signOut();
-                setMobileOpen(false);
-              }}
+              onClick={handleLogout}
               className="py-2 text-left text-red-500"
             >
               Logout
             </button>
           )}
-
         </div>
       )}
-
     </nav>
   );
 }
