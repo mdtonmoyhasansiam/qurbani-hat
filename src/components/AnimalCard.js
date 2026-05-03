@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function AnimalCard({ animal }) {
   return (
-    <div className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+    <div className="bg-white rounded-xl shadow hover:shadow-lg overflow-hidden">
 
       <img
         src={animal.image}
@@ -13,7 +13,7 @@ export default function AnimalCard({ animal }) {
 
       <div className="p-4">
 
-        <h2 className="text-lg font-bold">
+        <h2 className="font-bold text-lg">
           {animal.name}
         </h2>
 
@@ -23,12 +23,13 @@ export default function AnimalCard({ animal }) {
 
         <Link
           href={`/animals/${animal.id}`}
-          className="inline-block mt-3 bg-green-600 text-white px-4 py-1 rounded-full hover:bg-green-700"
+          className="inline-block mt-3 bg-green-600 text-white px-4 py-1 rounded-full"
         >
           View Details
         </Link>
 
       </div>
+
     </div>
   );
 }

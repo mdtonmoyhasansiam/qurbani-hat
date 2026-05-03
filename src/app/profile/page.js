@@ -9,9 +9,21 @@ export default function ProfilePage() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    const data =
-      JSON.parse(localStorage.getItem("bookings")) || [];
-    setBookings(data);
+    const loadData = () => {
+      const data =
+        JSON.parse(localStorage.getItem("bookings")) || [];
+
+      setBookings(data);
+    };
+
+    loadData();
+
+    // live sync (important fix)
+    window.addEventListener("storage", loadData);
+
+    return () => {
+      window.removeEventListener("storage", loadData);
+    };
   }, []);
 
   if (!session) {
@@ -24,10 +36,22 @@ export default function ProfilePage() {
     );
   }
 
+  // 🔥 FIXED FILTER (supports old + new data)
+  const userBookings = bookings.filter(
+    (b) =>
+      b.user === session.user.email ||
+      b.userEmail === session.user.email
+  );
+
   // delete booking
   const deleteBooking = (index) => {
     const updated = [...bookings];
-    updated.splice(index, 1);
+
+    const realIndex = bookings.findIndex(
+      (b) => b === userBookings[index]
+    );
+
+    updated.splice(realIndex, 1);
 
     setBookings(updated);
     localStorage.setItem(
@@ -37,10 +61,6 @@ export default function ProfilePage() {
 
     toast.success("Booking removed!");
   };
-
-  const userBookings = bookings.filter(
-    (b) => b.userEmail === session.user.email
-  );
 
   return (
     <div className="max-w-5xl mx-auto p-5">
@@ -52,7 +72,7 @@ export default function ProfilePage() {
           src={
             session?.user?.image ||
             "https://ui-avatars.com/api/?name=" +
-            session.user.name
+              session.user.name
           }
           alt="profile"
           className="w-24 h-24 rounded-full mx-auto border-4 border-green-500"
@@ -73,7 +93,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* BOOKINGS SECTION */}
+      {/* BOOKINGS */}
       <h3 className="text-xl font-bold mb-4">
         Your Bookings 🐄
       </h3>
@@ -92,7 +112,7 @@ export default function ProfilePage() {
             >
 
               <h2 className="text-lg font-bold">
-                {b.animalName}
+                {b.name || b.animalName}
               </h2>
 
               <p className="text-gray-600">
@@ -100,7 +120,9 @@ export default function ProfilePage() {
               </p>
 
               <p className="text-sm text-gray-400">
-                {new Date(b.time).toLocaleString()}
+                {b.time
+                  ? new Date(b.time).toLocaleString()
+                  : "Recently booked"}
               </p>
 
               <button
@@ -109,8 +131,10 @@ export default function ProfilePage() {
               >
                 Cancel Booking
               </button>
+
             </div>
           ))}
+
         </div>
       )}
 

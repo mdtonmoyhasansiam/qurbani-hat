@@ -7,5 +7,15 @@
   { "id": 6, "name": "Healthy Cow", "type": "Cow", "price": 160000, "image": "/cows/cow6.jpg" },
   { "id": 7, "name": "Village Cow", "type": "Cow", "price": 110000, "image": "/cows/cow7.jpg" },
   { "id": 8, "name": "Premium Cow", "type": "Cow", "price": 220000, "image": "/cows/cow8.jpg" },
-  { "id": 9, "name": "Royal Cow", "type": "Cow", "price": 250000, "image": "/cows/cow9.jpg" }
+  { "id": 9, "name": "Royal Cow", "type": "Cow", "price": 250000, "image": "/cows/cow9.jpg" },
+
+  { "id": 10, "name": "Brown Cow", "type": "Cow", "price": 125000, "image": "/cows/cow10.jpg" },
+  { "id": 11, "name": "Hybrid Cow", "type": "Cow", "price": 170000, "image": "/cows/cow11.jpg" },
+  { "id": 12, "name": "Grass Fed Cow", "type": "Cow", "price": 135000, "image": "/cows/cow12.jpg" },
+  { "id": 13, "name": "Strong Cow", "type": "Cow", "price": 180000, "image": "/cows/cow13.jpg" },
+  { "id": 14, "name": "Local Farm Cow", "type": "Cow", "price": 145000, "image": "/cows/cow14.jpg" },
+  { "id": 15, "name": "Milk Cow", "type": "Cow", "price": 155000, "image": "/cows/cow15.jpg" },
+  { "id": 16, "name": "Young Cow", "type": "Cow", "price": 115000, "image": "/cows/cow16.jpg" },
+  { "id": 17, "name": "Giant Cow", "type": "Cow", "price": 230000, "image": "/cows/cow17.jpg" },
+  { "id": 18, "name": "Elite Cow", "type": "Cow", "price": 260000, "image": "/cows/cow18.jpg" }
 ]
