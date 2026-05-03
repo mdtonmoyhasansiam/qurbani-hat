@@ -1,13 +1,31 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export default function AnimalCard({ animal }) {
   const { data: session } = useSession();
 
+  // check already booked
+  const isAlreadyBooked = () => {
+    const bookings =
+      JSON.parse(localStorage.getItem("bookings")) || [];
+
+    return bookings.some(
+      (b) =>
+        b.animalId === animal.id &&
+        b.userEmail === session?.user?.email
+    );
+  };
+
   const handleBook = () => {
     if (!session) {
-      alert("Please login first");
+      toast.error("Please login first");
+      return;
+    }
+
+    if (isAlreadyBooked()) {
+      toast.error("Already booked!");
       return;
     }
 
@@ -21,15 +39,15 @@ export default function AnimalCard({ animal }) {
       time: new Date().toISOString(),
     };
 
-    const oldBookings =
+    const old =
       JSON.parse(localStorage.getItem("bookings")) || [];
 
     localStorage.setItem(
       "bookings",
-      JSON.stringify([...oldBookings, booking])
+      JSON.stringify([...old, booking])
     );
 
-    alert("Booking successful!");
+    toast.success("Booking successful!");
   };
 
   return (
@@ -54,9 +72,22 @@ export default function AnimalCard({ animal }) {
       {/* BUTTON */}
       <button
         onClick={handleBook}
-        className="bg-green-600 text-white px-3 py-1 mt-3 rounded w-full"
+        disabled={
+          !session || isAlreadyBooked()
+        }
+        className={`w-full mt-3 px-3 py-2 rounded text-white font-semibold transition ${
+          !session
+            ? "bg-gray-400 cursor-not-allowed"
+            : isAlreadyBooked()
+            ? "bg-yellow-500 cursor-not-allowed"
+            : "bg-green-600 hover:bg-green-700"
+        }`}
       >
-        Book Now
+        {!session
+          ? "Login to Book"
+          : isAlreadyBooked()
+          ? "Already Booked"
+          : "Book Now"}
       </button>
     </div>
   );
