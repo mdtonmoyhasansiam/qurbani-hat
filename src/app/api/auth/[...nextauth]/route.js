@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-const handler = NextAuth({
+const authHandler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -15,23 +15,24 @@ const handler = NextAuth({
 
   callbacks: {
     async jwt({ token, account, profile }) {
-      // only runs on first login
+      // runs only on initial sign-in
       if (account && profile) {
         token.name = profile.name;
         token.email = profile.email;
-        token.picture =
-          profile.picture || profile.image || null;
+        token.picture = profile.picture || profile.image || null;
       }
       return token;
     },
 
     async session({ session, token }) {
-      session.user.name = token.name;
-      session.user.email = token.email;
-      session.user.image = token.picture;
+      if (session?.user) {
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
       return session;
     },
   },
 });
 
-export { handler as GET, handler as POST };
+export { authHandler as GET, authHandler as POST };
