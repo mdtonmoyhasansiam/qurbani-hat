@@ -20,7 +20,6 @@ export default function Navbar() {
     { name: "Profile", path: "/profile" },
   ];
 
-  // click outside close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -41,7 +40,6 @@ export default function Navbar() {
 
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
-        {/* ✅ LOGO (CLICKABLE FIXED) */}
         <Link
           href="/"
           className="text-xl font-bold text-green-700 cursor-pointer hover:scale-105 hover:text-green-800 transition"
@@ -51,7 +49,6 @@ export default function Navbar() {
 
         {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-2">
-
           {navItems.map((item) => {
             const active = pathname === item.path;
 
@@ -59,7 +56,7 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 href={item.path}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-4 py-1.5 rounded-full text-sm font-medium ${
                   active
                     ? "bg-green-600 text-white shadow"
                     : "text-gray-700 hover:text-green-600"
@@ -69,7 +66,6 @@ export default function Navbar() {
               </Link>
             );
           })}
-
         </div>
 
         {/* RIGHT SIDE */}
@@ -77,18 +73,17 @@ export default function Navbar() {
 
           {!session ? (
             <Link
-              href="/api/auth/signin"
-              className="bg-green-600 text-white px-4 py-1.5 rounded-full hover:bg-green-700 transition shadow cursor-pointer"
+              href="/login"
+              className="bg-green-600 text-white px-4 py-1.5 rounded-full"
             >
               Login
             </Link>
           ) : (
             <div className="relative flex items-center gap-2">
 
-              {/* PROFILE BUTTON */}
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 bg-white px-2 py-1 rounded-full shadow-sm hover:scale-105 transition cursor-pointer"
+                className="flex items-center gap-2 bg-white px-2 py-1 rounded-full shadow-sm"
               >
                 <img
                   src={
@@ -100,16 +95,14 @@ export default function Navbar() {
                 />
               </button>
 
-              {/* DROPDOWN */}
               {profileOpen && (
                 <div
                   ref={profileRef}
-                  className="absolute right-0 top-12 w-44 bg-white rounded-xl shadow-xl overflow-hidden animate-fade-in z-50"
+                  className="absolute right-0 top-12 w-44 bg-white rounded-xl shadow-xl"
                 >
-
                   <Link
                     href="/profile"
-                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    className="block px-4 py-2 hover:bg-gray-100"
                     onClick={() => setProfileOpen(false)}
                   >
                     👤 Profile
@@ -120,24 +113,22 @@ export default function Navbar() {
                       signOut();
                       setProfileOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
+                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
                   >
                     🚪 Logout
                   </button>
-
                 </div>
               )}
-
-              {/* MOBILE MENU BUTTON */}
-              <button
-                className="md:hidden text-2xl ml-2 cursor-pointer"
-                onClick={() => setMobileOpen(!mobileOpen)}
-              >
-                ☰
-              </button>
-
             </div>
           )}
+
+          {/* ✅ FIX: Hamburger always visible */}
+          <button
+            className="md:hidden text-2xl cursor-pointer"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            ☰
+          </button>
 
         </div>
       </div>
@@ -151,7 +142,7 @@ export default function Navbar() {
               key={item.path}
               href={item.path}
               onClick={() => setMobileOpen(false)}
-              className={`py-2 border-b cursor-pointer ${
+              className={`py-2 border-b ${
                 pathname === item.path
                   ? "text-green-600 font-semibold"
                   : "text-gray-700"
@@ -161,13 +152,21 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {session && (
+          {!session ? (
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="py-2 text-green-600 font-semibold"
+            >
+              Login
+            </Link>
+          ) : (
             <button
               onClick={() => {
                 signOut();
                 setMobileOpen(false);
               }}
-              className="py-2 text-left text-red-500 cursor-pointer"
+              className="py-2 text-left text-red-500"
             >
               Logout
             </button>
