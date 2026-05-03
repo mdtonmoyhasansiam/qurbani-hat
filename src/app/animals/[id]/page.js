@@ -11,18 +11,18 @@ export default function AnimalDetails() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const animal = animalsData.find(
-    (a) => a.id.toString() === id
+  const currentAnimal = animalsData.find(
+    (item) => String(item.id) === id
   );
 
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
   });
 
-  if (!animal) {
+  if (!currentAnimal) {
     return (
       <div className="text-center mt-10 text-red-500">
         Animal not found ❌
@@ -30,12 +30,12 @@ export default function AnimalDetails() {
     );
   }
 
-  // 🔐 LOGIN CHECK
+  // LOGIN CHECK
   if (!session) {
     return (
       <div className="text-center mt-20">
         <h2 className="text-2xl font-bold mb-4">
-          Please login to book this animal 🔐
+          Please login to continue booking 🔐
         </h2>
 
         <button
@@ -48,40 +48,45 @@ export default function AnimalDetails() {
     );
   }
 
-  // 📝 HANDLE INPUT
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+  // HANDLE INPUT CHANGE
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  // 🚀 SUBMIT (SAVE + TOAST + RESET)
-  const handleSubmit = (e) => {
+  // SUBMIT BOOKING
+  const handleBooking = (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.email || !form.phone || !form.address) {
+    const { name, email, phone, address } = formData;
+
+    if (!name || !email || !phone || !address) {
       toast.error("Please fill all fields ⚠️");
       return;
     }
 
-    // 🔥 SAVE FOR PROFILE
-    let bookings =
+    const existingBookings =
       JSON.parse(localStorage.getItem("bookings")) || [];
 
-    bookings.push({
-      animalName: animal.name,
-      price: animal.price,
+    const newBooking = {
+      animalName: currentAnimal.name,
+      price: currentAnimal.price,
       userEmail: session.user.email,
       time: new Date().toISOString(),
-    });
+    };
 
-    localStorage.setItem("bookings", JSON.stringify(bookings));
+    localStorage.setItem(
+      "bookings",
+      JSON.stringify([...existingBookings, newBooking])
+    );
 
     toast.success("Booking Successful 🎉");
 
-    // 🔄 RESET FORM
-    setForm({
+    setFormData({
       name: "",
       email: "",
       phone: "",
@@ -92,82 +97,72 @@ export default function AnimalDetails() {
   return (
     <div className="max-w-5xl mx-auto p-6">
 
-      {/* IMAGE */}
       <img
-        src={animal.image}
+        src={currentAnimal.image}
         className="w-full h-80 object-cover rounded-xl shadow"
       />
 
-      {/* NAME */}
       <h1 className="text-3xl font-bold mt-4">
-        {animal.name}
+        {currentAnimal.name}
       </h1>
 
-      {/* PRICE */}
       <p className="text-green-600 text-xl font-semibold mt-2">
-        {animal.price} BDT
+        {currentAnimal.price} BDT
       </p>
 
-      {/* DETAILS */}
       <div className="grid md:grid-cols-2 gap-4 mt-5 text-gray-700">
-
-        <p><b>Type:</b> {animal.type}</p>
-        <p><b>Breed:</b> {animal.breed}</p>
-        <p><b>Weight:</b> {animal.weight} kg</p>
-        <p><b>Age:</b> {animal.age} years</p>
-        <p><b>Location:</b> {animal.location}</p>
-        <p><b>Category:</b> {animal.category}</p>
-
+        <p><b>Type:</b> {currentAnimal.type}</p>
+        <p><b>Breed:</b> {currentAnimal.breed}</p>
+        <p><b>Weight:</b> {currentAnimal.weight} kg</p>
+        <p><b>Age:</b> {currentAnimal.age} years</p>
+        <p><b>Location:</b> {currentAnimal.location}</p>
+        <p><b>Category:</b> {currentAnimal.category}</p>
       </div>
 
-      {/* DESCRIPTION */}
       <p className="mt-4 text-gray-600">
-        {animal.description}
+        {currentAnimal.description}
       </p>
 
-      {/* 📝 BOOKING FORM */}
+      {/* FORM */}
       <div className="mt-10 bg-white shadow-lg rounded-xl p-6">
 
         <h2 className="text-2xl font-bold mb-4">
           Book This Animal 🐄
         </h2>
 
-        <form onSubmit={handleSubmit} className="grid gap-4">
+        <form onSubmit={handleBooking} className="grid gap-4">
 
           <input
-            type="text"
             name="name"
             placeholder="Your Name"
-            value={form.name}
-            onChange={handleChange}
+            value={formData.name}
+            onChange={handleInput}
             className="border px-4 py-2 rounded"
           />
 
           <input
-            type="email"
             name="email"
             placeholder="Your Email"
-            value={form.email}
-            onChange={handleChange}
+            value={formData.email}
+            onChange={handleInput}
             className="border px-4 py-2 rounded"
           />
 
           <input
-            type="text"
             name="phone"
             placeholder="Phone Number"
-            value={form.phone}
-            onChange={handleChange}
+            value={formData.phone}
+            onChange={handleInput}
             className="border px-4 py-2 rounded"
           />
 
           <textarea
             name="address"
             placeholder="Your Address"
-            value={form.address}
-            onChange={handleChange}
+            value={formData.address}
+            onChange={handleInput}
             className="border px-4 py-2 rounded"
-          ></textarea>
+          />
 
           <button
             type="submit"
@@ -177,7 +172,6 @@ export default function AnimalDetails() {
           </button>
 
         </form>
-
       </div>
 
     </div>
