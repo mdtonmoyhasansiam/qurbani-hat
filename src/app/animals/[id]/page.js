@@ -40,7 +40,7 @@ export default function AnimalDetails() {
 
         <button
           onClick={() => router.push("/api/auth/signin")}
-          className="bg-green-600 text-white px-6 py-2 rounded-full"
+          className="bg-green-600 text-white px-6 py-2 rounded-full cursor-pointer"
         >
           Login Now
         </button>
@@ -56,7 +56,7 @@ export default function AnimalDetails() {
     });
   };
 
-  // 🚀 SUBMIT (NO SAVE)
+  // 🚀 SUBMIT (SAVE + TOAST + RESET)
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -65,9 +65,20 @@ export default function AnimalDetails() {
       return;
     }
 
-    // 👉 NO DATABASE / NO LOCAL STORAGE
+    // 🔥 SAVE FOR PROFILE
+    let bookings =
+      JSON.parse(localStorage.getItem("bookings")) || [];
 
-    toast.success("Booking Request Submitted 🎉");
+    bookings.push({
+      animalName: animal.name,
+      price: animal.price,
+      userEmail: session.user.email,
+      time: new Date().toISOString(),
+    });
+
+    localStorage.setItem("bookings", JSON.stringify(bookings));
+
+    toast.success("Booking Successful 🎉");
 
     // 🔄 RESET FORM
     setForm({
@@ -87,11 +98,12 @@ export default function AnimalDetails() {
         className="w-full h-80 object-cover rounded-xl shadow"
       />
 
-      {/* BASIC INFO */}
+      {/* NAME */}
       <h1 className="text-3xl font-bold mt-4">
         {animal.name}
       </h1>
 
+      {/* PRICE */}
       <p className="text-green-600 text-xl font-semibold mt-2">
         {animal.price} BDT
       </p>
