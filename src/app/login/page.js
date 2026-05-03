@@ -9,15 +9,15 @@ export default function Login() {
   const router = useRouter();
   const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleCredentialsLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const form = e.target;
 
     const res = await signIn("credentials", {
-      email,
-      password,
+      email: form.email.value,
+      password: form.password.value,
       redirect: false,
     });
 
@@ -28,8 +28,8 @@ export default function Login() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    await signIn("google", { callbackUrl: "/" });
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -38,9 +38,10 @@ export default function Login() {
         Login
       </h1>
 
-      <form onSubmit={handleLogin} className="space-y-3">
+      <form onSubmit={handleCredentialsLogin} className="space-y-3">
         <input
           name="email"
+          type="email"
           placeholder="Email"
           className="border p-2 w-full"
           required
@@ -58,27 +59,31 @@ export default function Login() {
           <p className="text-red-500 text-sm">{error}</p>
         )}
 
-        <button className="bg-green-600 text-white px-4 py-2 w-full cursor-pointer">
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 w-full cursor-pointer hover:bg-green-700 transition"
+        >
           Login
         </button>
       </form>
 
       <button
         onClick={handleGoogleLogin}
-        className="mt-3 w-full flex items-center justify-center gap-2 border border-gray-300 bg-gray-100 hover:bg-white hover:shadow-md transition-all duration-200 py-2 rounded-md cursor-pointer"
+        className="mt-3 w-full flex items-center justify-center gap-2 border border-gray-300 bg-gray-100 hover:bg-white hover:shadow-md transition-all duration-200 py-2 rounded-md"
       >
         <img
           src="https://www.svgrepo.com/show/475656/google-color.svg"
           className="w-5 h-5"
+          alt="Google"
         />
         <span className="font-medium text-gray-700">
           Login with Google
         </span>
       </button>
 
-      <p className="mt-4 text-center">
+      <p className="mt-4 text-center text-sm">
         New here?{" "}
-        <Link href="/register" className="text-green-600">
+        <Link href="/register" className="text-green-600 hover:underline">
           Register
         </Link>
       </p>
