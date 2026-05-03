@@ -41,10 +41,13 @@ export default function Navbar() {
 
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
-        {/* LOGO */}
-        <div className="text-xl font-bold text-green-700">
+        {/* ✅ LOGO (CLICKABLE FIXED) */}
+        <Link
+          href="/"
+          className="text-xl font-bold text-green-700 cursor-pointer hover:scale-105 hover:text-green-800 transition"
+        >
           🐄 QurbaniHat
-        </div>
+        </Link>
 
         {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-2">
@@ -66,6 +69,7 @@ export default function Navbar() {
               </Link>
             );
           })}
+
         </div>
 
         {/* RIGHT SIDE */}
@@ -74,7 +78,7 @@ export default function Navbar() {
           {!session ? (
             <Link
               href="/api/auth/signin"
-              className="bg-green-600 text-white px-4 py-1.5 rounded-full hover:bg-green-700 transition shadow"
+              className="bg-green-600 text-white px-4 py-1.5 rounded-full hover:bg-green-700 transition shadow cursor-pointer"
             >
               Login
             </Link>
@@ -84,7 +88,7 @@ export default function Navbar() {
               {/* PROFILE BUTTON */}
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 bg-white px-2 py-1 rounded-full shadow-sm hover:scale-105 transition"
+                className="flex items-center gap-2 bg-white px-2 py-1 rounded-full shadow-sm hover:scale-105 transition cursor-pointer"
               >
                 <img
                   src={
@@ -105,7 +109,7 @@ export default function Navbar() {
 
                   <Link
                     href="/profile"
-                    className="block px-4 py-2 hover:bg-gray-100"
+                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => setProfileOpen(false)}
                   >
                     👤 Profile
@@ -116,7 +120,7 @@ export default function Navbar() {
                       signOut();
                       setProfileOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
+                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 cursor-pointer"
                   >
                     🚪 Logout
                   </button>
@@ -126,11 +130,12 @@ export default function Navbar() {
 
               {/* MOBILE MENU BUTTON */}
               <button
-                className="md:hidden text-2xl ml-2"
+                className="md:hidden text-2xl ml-2 cursor-pointer"
                 onClick={() => setMobileOpen(!mobileOpen)}
               >
                 ☰
               </button>
+
             </div>
           )}
 
@@ -146,7 +151,7 @@ export default function Navbar() {
               key={item.path}
               href={item.path}
               onClick={() => setMobileOpen(false)}
-              className={`py-2 border-b ${
+              className={`py-2 border-b cursor-pointer ${
                 pathname === item.path
                   ? "text-green-600 font-semibold"
                   : "text-gray-700"
@@ -162,7 +167,7 @@ export default function Navbar() {
                 signOut();
                 setMobileOpen(false);
               }}
-              className="py-2 text-left text-red-500"
+              className="py-2 text-left text-red-500 cursor-pointer"
             >
               Logout
             </button>
