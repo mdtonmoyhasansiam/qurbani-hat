@@ -8,7 +8,6 @@ export default function ProfilePage() {
   const { data: session } = useSession();
   const [bookings, setBookings] = useState([]);
 
-  // load bookings
   useEffect(() => {
     const data =
       JSON.parse(localStorage.getItem("bookings")) || [];
@@ -17,8 +16,8 @@ export default function ProfilePage() {
 
   if (!session) {
     return (
-      <div className="p-5 text-center">
-        <h2 className="text-xl font-bold">
+      <div className="p-10 text-center">
+        <h2 className="text-2xl font-bold">
           Please login first
         </h2>
       </div>
@@ -36,26 +35,30 @@ export default function ProfilePage() {
       JSON.stringify(updated)
     );
 
-    toast.success("Booking deleted!");
+    toast.success("Booking removed!");
   };
 
-  // user-specific bookings
   const userBookings = bookings.filter(
     (b) => b.userEmail === session.user.email
   );
 
   return (
-    <div className="p-5 max-w-4xl mx-auto">
+    <div className="max-w-5xl mx-auto p-5">
 
-      {/* PROFILE CARD */}
-      <div className="bg-white shadow-md p-5 rounded-lg mb-5 text-center">
+      {/* PROFILE HEADER */}
+      <div className="bg-white shadow-lg rounded-xl p-6 text-center mb-6">
 
         <img
-          src={session.user.image}
-          className="w-20 h-20 rounded-full mx-auto"
+          src={
+            session?.user?.image ||
+            "https://ui-avatars.com/api/?name=" +
+            session.user.name
+          }
+          alt="profile"
+          className="w-24 h-24 rounded-full mx-auto border-4 border-green-500"
         />
 
-        <h2 className="text-2xl font-bold mt-2">
+        <h2 className="text-2xl font-bold mt-3">
           {session.user.name}
         </h2>
 
@@ -63,41 +66,48 @@ export default function ProfilePage() {
           {session.user.email}
         </p>
 
-        <p className="mt-2 font-semibold text-green-600">
-          Total Bookings: {userBookings.length}
-        </p>
+        <div className="mt-3">
+          <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">
+            Total Bookings: {userBookings.length}
+          </span>
+        </div>
       </div>
 
       {/* BOOKINGS SECTION */}
-      <h3 className="text-xl font-bold mb-3">
+      <h3 className="text-xl font-bold mb-4">
         Your Bookings 🐄
       </h3>
 
       {userBookings.length === 0 ? (
-        <p>No bookings yet.</p>
+        <div className="text-center text-gray-500">
+          No bookings yet 😔
+        </div>
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
+
           {userBookings.map((b, index) => (
             <div
               key={index}
-              className="border p-3 rounded shadow bg-white"
+              className="bg-white shadow-md rounded-lg p-4 border"
             >
 
-              <h2 className="font-bold text-lg">
+              <h2 className="text-lg font-bold">
                 {b.animalName}
               </h2>
 
-              <p>Price: {b.price} BDT</p>
+              <p className="text-gray-600">
+                Price: {b.price} BDT
+              </p>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-400">
                 {new Date(b.time).toLocaleString()}
               </p>
 
               <button
                 onClick={() => deleteBooking(index)}
-                className="bg-red-500 text-white px-3 py-1 mt-2 rounded"
+                className="mt-3 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
               >
-                Delete
+                Cancel Booking
               </button>
             </div>
           ))}
