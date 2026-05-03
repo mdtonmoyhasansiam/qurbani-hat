@@ -1,21 +1,26 @@
-"use client";
-
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { SessionProvider } from "next-auth/react";
+import Providers from "@/components/Providers";
 import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({ children }) {
   return (
-    <html>
-      <body>
-        <SessionProvider>
+    <html lang="en">
+      <body className="bg-gray-50">
+
+        <Providers>
           <Navbar />
-          <div className="min-h-screen p-4">{children}</div>
+
+          <main className="min-h-screen px-4 py-6">
+            {children}
+          </main>
+
           <Footer />
-          <Toaster />
-        </SessionProvider>
+          <Toaster position="top-right" />
+
+        </Providers>
+
       </body>
     </html>
   );

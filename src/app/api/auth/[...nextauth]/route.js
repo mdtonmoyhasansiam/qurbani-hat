@@ -14,33 +14,22 @@ const handler = NextAuth({
   },
 
   callbacks: {
-    async jwt({ token, account, profile }) {
-      // প্রথম login এ Google data আসবে
+    async jwt({ token, profile }) {
       if (profile) {
         token.name = profile.name;
         token.email = profile.email;
-
-        // Google কখনো picture দেয়, কখনো image দেয়
         token.picture =
           profile.picture || profile.image || null;
       }
-
       return token;
     },
 
     async session({ session, token }) {
-      if (session.user) {
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.user.image = token.picture;
-      }
-
+      session.user.name = token.name;
+      session.user.email = token.email;
+      session.user.image = token.picture;
       return session;
     },
-  },
-
-  pages: {
-    signIn: "/", // চাইলে custom login page দিতে পারো
   },
 });
 

@@ -1,59 +1,72 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <div
-      style={{
-        background: "green",
-        color: "white",
-        padding: "10px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <h2>QurbaniHat 🐄</h2>
+    <nav className="bg-green-600 text-white px-6 py-3 flex items-center justify-between shadow-md">
 
-      <div>
-        <Link href="/">Home</Link>{" | "}
-        <Link href="/animals">Animals</Link>{" | "}
+      {/* LOGO */}
+      <div className="text-xl font-bold">
+        🐄 QurbaniHat
+      </div>
 
-        {/* 🔐 যদি login না থাকে */}
+      {/* CENTER MENU */}
+      <div className="flex gap-6 font-medium">
+        <Link href="/" className="hover:text-yellow-300">
+          Home
+        </Link>
+
+        <Link href="/animals" className="hover:text-yellow-300">
+          Animals
+        </Link>
+      </div>
+
+      {/* RIGHT AUTH */}
+      <div className="flex items-center gap-3">
+
         {!session ? (
-          <button
-            onClick={() => signIn("google")}
-            style={{ marginLeft: "10px" }}
+          <Link
+            href="/api/auth/signin"
+            className="bg-white text-green-600 px-3 py-1 rounded font-semibold"
           >
             Login
-          </button>
+          </Link>
         ) : (
           <>
-            {/* 👤 user name */}
-            <span style={{ marginLeft: "10px" }}>
+            <img
+              src={
+                session.user.image ||
+                "https://ui-avatars.com/api/?name=" +
+                  session.user.name
+              }
+              className="w-8 h-8 rounded-full border"
+            />
+
+            <span className="text-sm">
               {session.user.name}
             </span>
 
-            {" | "}
+            <Link
+              href="/profile"
+              className="bg-white text-green-600 px-2 py-1 rounded text-sm font-semibold"
+            >
+              Profile
+            </Link>
 
-            {/* 👤 profile */}
-            <Link href="/profile">Profile</Link>
-
-            {" | "}
-
-            {/* 🚪 logout */}
             <button
               onClick={() => signOut()}
-              style={{ marginLeft: "10px" }}
+              className="bg-red-500 px-2 py-1 rounded text-sm"
             >
               Logout
             </button>
           </>
         )}
+
       </div>
-    </div>
+    </nav>
   );
 }
