@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function AnimalCard({ animal }) {
   return (
-    <div className="bg-white rounded-xl shadow hover:shadow-lg overflow-hidden">
+    <div className="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
 
       <img
         src={animal.image}
@@ -17,7 +17,7 @@ export default function AnimalCard({ animal }) {
           {animal.name}
         </h2>
 
-        <p className="text-green-600 font-semibold">
+        <p className="text-green-600 font-semibold mt-1">
           {animal.price} BDT
         </p>
 

@@ -60,7 +60,6 @@ export default function Home() {
       {/* FEATURED ANIMALS SECTION */}
       <div className="max-w-6xl mx-auto px-4 mb-14">
 
-        {/* HEADER */}
         <div className="text-center mb-8">
 
           <span className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-green-500 to-emerald-400 text-white text-sm font-medium shadow">
@@ -77,7 +76,6 @@ export default function Home() {
 
         </div>
 
-        {/* GRID */}
         <div className="grid md:grid-cols-3 gap-6">
 
           {featured.map((animal) => (
@@ -88,10 +86,72 @@ export default function Home() {
 
       </div>
 
+      {/* 🆕 QURBANI TIPS + TOP BREEDS */}
+      <div className="bg-gray-100 py-14 px-4 mb-12">
+
+        <div className="max-w-6xl mx-auto">
+
+          {/* HEADER */}
+          <div className="text-center mb-10">
+
+            <span className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-orange-400 text-white text-sm font-medium shadow">
+              Helpful Guide
+            </span>
+
+            <h2 className="text-3xl font-bold mt-3">
+              Qurbani Tips & Top Breeds 🐄
+            </h2>
+
+            <p className="text-gray-500 mt-1">
+              Make the best choice for your Qurbani
+            </p>
+
+          </div>
+
+          {/* CONTENT */}
+          <div className="grid md:grid-cols-2 gap-6">
+
+            {/* TIPS */}
+            <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+
+              <h3 className="text-xl font-bold mb-3">
+                📝 Qurbani Tips
+              </h3>
+
+              <ul className="space-y-2 text-gray-600 list-disc pl-5">
+                <li>Choose healthy and active animals</li>
+                <li>Check weight and age carefully</li>
+                <li>Buy from trusted sellers</li>
+                <li>Ensure proper feeding & care</li>
+              </ul>
+
+            </div>
+
+            {/* BREEDS */}
+            <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+
+              <h3 className="text-xl font-bold mb-3">
+                🐄 Top Breeds
+              </h3>
+
+              <ul className="space-y-2 text-gray-600 list-disc pl-5">
+                <li>Deshi Cow – Best for local Qurbani</li>
+                <li>Indian Cow – Large and strong</li>
+                <li>Foreign Cow – Premium quality</li>
+                <li>Hybrid Cow – Balanced option</li>
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
       {/* WHY CHOOSE SECTION */}
       <div className="max-w-6xl mx-auto px-4 mb-12">
 
-        {/* HEADER */}
         <div className="text-center mb-8">
 
           <span className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium shadow">
@@ -108,7 +168,6 @@ export default function Home() {
 
         </div>
 
-        {/* FEATURES GRID */}
         <div className="grid md:grid-cols-3 gap-6">
 
           {features.map((f, i) => (
