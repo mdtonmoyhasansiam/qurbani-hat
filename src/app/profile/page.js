@@ -3,6 +3,8 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import "animate.css";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
@@ -12,13 +14,10 @@ export default function ProfilePage() {
     const loadData = () => {
       const data =
         JSON.parse(localStorage.getItem("bookings")) || [];
-
       setBookings(data);
     };
 
     loadData();
-
-    // live sync (important fix)
     window.addEventListener("storage", loadData);
 
     return () => {
@@ -36,14 +35,12 @@ export default function ProfilePage() {
     );
   }
 
-  // 🔥 FIXED FILTER (supports old + new data)
   const userBookings = bookings.filter(
     (b) =>
       b.user === session.user.email ||
       b.userEmail === session.user.email
   );
 
-  // delete booking
   const deleteBooking = (index) => {
     const updated = [...bookings];
 
@@ -66,7 +63,7 @@ export default function ProfilePage() {
     <div className="max-w-5xl mx-auto p-5">
 
       {/* PROFILE HEADER */}
-      <div className="bg-white shadow-lg rounded-xl p-6 text-center mb-6">
+      <div className="bg-white shadow-lg rounded-xl p-6 text-center mb-6 animate__animated animate__fadeIn">
 
         <img
           src={
@@ -74,7 +71,6 @@ export default function ProfilePage() {
             "https://ui-avatars.com/api/?name=" +
               session.user.name
           }
-          alt="profile"
           className="w-24 h-24 rounded-full mx-auto border-4 border-green-500"
         />
 
@@ -91,6 +87,15 @@ export default function ProfilePage() {
             Total Bookings: {userBookings.length}
           </span>
         </div>
+
+        {/* ✅ UPDATE BUTTON (NEW REQUIREMENT) */}
+        <Link
+          href="/profile/update"
+          className="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Update Information
+        </Link>
+
       </div>
 
       {/* BOOKINGS */}
@@ -110,7 +115,6 @@ export default function ProfilePage() {
               key={index}
               className="bg-white shadow-md rounded-lg p-4 border"
             >
-
               <h2 className="text-lg font-bold">
                 {b.name || b.animalName}
               </h2>
@@ -131,7 +135,6 @@ export default function ProfilePage() {
               >
                 Cancel Booking
               </button>
-
             </div>
           ))}
 
