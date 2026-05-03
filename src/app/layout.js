@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50">
+      <body className="bg-gradient-to-b from-gray-50 via-white to-green-50 text-gray-800">
 
         <Providers>
           <Navbar />
